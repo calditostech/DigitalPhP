@@ -1,36 +1,42 @@
 <?php
 
+session_start();
+
 $categorias = [];
 $categorias[] = 'infantil';
 $categorias[] = 'adolescente';
 $categorias[] = 'adulto';
-$categorias[] = 'idoso';
+
 
 $nome = $_POST['nome'];
 $idade = $_POST['idade'];
 
 if(empty($nome) && empty($idade))
 {
-    echo 'O nome e idade não pode ser visto';
+    $_SESSION['mensagemDeErro'] = 'O nome não pode ser vazio, por favor informe um nome e idade';
+    header('location: index.php');
     return;
 }
 
-if(strlen($nome) < 3)
+else if(strlen($nome) < 3)
 {
-   echo 'O nome deve conter mais de 3 caracteres';
-   return;
-}
-
-if(strlen($nome) > 40)
-{
-    echo "O nome é muito extenso";
+    $_SESSION['mensagemDeErro'] = 'O nome deve conter mais de 3 caracteres';
+    header('location: index.php');
     return;
 }
 
-if(!is_numeric($idade))
+else if(strlen($nome) > 40)
 {
-   echo "informe um numero para idade";
-   return;
+    $_SESSION['mensagemDeErro'] = "O nome é muito extenso";
+     header('location: index.php');
+     return;
+}
+
+else if(!is_numeric($idade))
+{
+    $_SESSION['mensagemDeErro'] = "informe um numero para idade";
+    header('location: index.php');
+    return;
 }
 
 if($idade >= 6 && $idade <= 12)
